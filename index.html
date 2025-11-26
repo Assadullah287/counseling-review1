@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Counseling Students Reviews (Session-Based Gating)</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9; /* Slate background for professional feel */
+        }
+        .review-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px -5px rgba(29, 78, 216, 0.1), 0 4px 10px -2px rgba(29, 78, 216, 0.05);
+        }
+        .review-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px -8px rgba(29, 78, 216, 0.15);
+        }
+        .form-input {
+            transition: all 0.15s ease;
+            border-color: #d1d5db;
+        }
+        .form-input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+        .star-icon {
+            color: #fbbf24; /* Amber 400 for stars */
+        }
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8">
+
+    <div id="app" class="max-w-5xl mx-auto">
+        <header class="text-center py-6 sm:py-10 bg-white shadow-xl rounded-xl mb-8 review-card">
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-blue-600 tracking-tight">
+                Career Counseling Students Reviews
+            </h1>
+            <p class="mt-2 text-lg text-gray-600 font-medium">
+                Verified feedback from students who have completed our counseling program.
+            </p>
+        </header>
+
+        <!-- Main Content Area: Reviews and Gated Form -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Side: Gated Access / Review Form -->
+            <div class="lg:col-span-1 h-fit sticky top-8">
+
+                <!-- 1. Review Access Gate (Default State when form is hidden) -->
+                <div id="access-gate" class="bg-white p-6 sm:p-8 rounded-xl review-card border-l-4 border-indigo-500 shadow-xl">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Give Feedback</h2>
+                    <p class="text-gray-600 mb-6">If you have completed a counseling session, please enter your secret access code to proceed to the review form.</p>
+                    
+                    <input type="password" id="secret-code-input" placeholder="Enter Secret Code" class="form-input w-full p-3 border rounded-lg mb-4 focus:ring-indigo-500 focus:border-indigo-500">
+                    
+                    <button id="unlock-button" class="cta-button w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-indigo-700 transition duration-300">
+                        Unlock Review Form
+                    </button>
+                    <div id="gate-message-box" class="mt-4 p-3 rounded-lg text-center hidden"></div>
+                    <p class="mt-4 text-xs text-gray-500 text-center font-semibold">
+                        Please contact your counselor or administrator for your unique access code.
+                    </p>
+                </div>
+
+                <!-- 2. Review Submission Form (Hidden until unlocked) -->
+                <div id="review-form-section" class="bg-white p-6 sm:p-8 rounded-xl review-card h-fit border border-gray-100 hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">Submit Your Insight</h2>
+                    <form id="review-form">
+                        <div class="mb-4">
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name (Required)</label>
+                            <input type="text" id="name" placeholder="Enter your full name" required class="form-input w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email (Optional, for personalized advice)</label>
+                            <input type="email" id="email" placeholder="email@example.com" class="form-input w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Counseling Type (Required)</label>
+                            <select id="type" required class="form-input w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 appearance-none bg-white">
+                                <option value="" disabled selected>Select a service...</option>
+                                <option value="Aptitude Assessment">Aptitude Assessment</option>
+                                <option value="College Application Guidance">College Application Guidance</option>
+                                <option value="Major Selection">Major Selection</option>
+                                <option value="Career Path Planning">Career Path Planning</option>
+                                <option value="Interview Skills Workshop">Interview Skills Workshop</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="futurePlan" class="block text-sm font-medium text-gray-700 mb-1">Your Immediate Future Goal (Required)</label>
+                            <select id="futurePlan" required class="form-input w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 appearance-none bg-white">
+                                <option value="" disabled selected>Select your main goal...</option>
+                                <option value="Secure Internship/Job">Secure Internship/Job</option>
+                                <option value="Apply to Graduate School">Apply to Graduate School</option>
+                                <option value="Complete Certification/Course">Complete Certification/Course</option>
+                                <option value="Start My Own Business">Start My Own Business</option>
+                                <option value="Improve Professional Skills">Improve Professional Skills</option>
+                                <option value="Change Career Field">Change Career Field</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="rating" class="block text-sm font-medium text-gray-700 mb-1">Rating: <span id="rating-value" class="font-extrabold text-indigo-600">5/5</span></label>
+                            <input type="range" id="rating" min="1" max="5" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150">
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="review" class="block text-sm font-medium text-gray-700 mb-1">Your Detailed Feedback (Required, Min 15 Words)</label>
+                            <textarea id="review" rows="4" placeholder="Please provide constructive, detailed feedback on your experience." required class="form-input w-full p-3 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                        </div>
+
+                        <button type="submit" id="submit-button" class="cta-button w-full bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg shadow-indigo-500/50 hover:from-indigo-700 hover:to-blue-700 transition duration-300 transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-70">
+                            Submit Review
+                        </button>
+                        <button type="button" id="go-back-button" class="w-full mt-2 text-sm text-gray-500 hover:text-gray-700 transition duration-150">
+                            &#8592; Hide Review Form (Code remains saved)
+                        </button>
+                        <div id="message-box" class="mt-4 p-3 rounded-lg text-center hidden"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Side: Review Display Section -->
+            <div class="lg:col-span-2">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Verified Student Reviews <span id="review-count" class="text-indigo-600 text-xl font-extrabold"></span></h2>
+                <div id="reviews-container" class="space-y-6">
+                    <!-- Reviews will be injected here -->
+                    <div id="loading-indicator" class="text-center p-8 text-gray-500 bg-white rounded-xl shadow-inner">
+                        <svg class="animate-spin -ml-1 mr-3 h-6 w-6 text-indigo-500 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Fetching real-time student insights...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set Firebase Log Level to Debug for development visibility
+        setLogLevel('Debug');
+
+        // --- Firebase Configuration (Using global variables provided by the Canvas environment) ---
+        // Fallback to hardcoded values if environment variables are undefined
+const firebaseConfig = {
+  apiKey: "AIzaSyDcoFXzxlHor3XmrR5yyTt8h3sYckNb0m0",
+  authDomain: "counseling-reviews-7f01e.firebaseapp.com",
+  projectId: "counseling-reviews-7f01e",
+  storageBucket: "counseling-reviews-7f01e.appspot.com",   // FIXED
+  messagingSenderId: "126681063270",
+  appId: "1:126681063270:web:3cb8646a1ef84a63d4b2a7",
+  measurementId: "G-PG87PVEE8T"
+};
+
+
+const appId = "career-counseling-app";
+const initialAuthToken = null;
+
+
+
+        let app, db, auth;
+        let userId = null;
+        let isAuthReady = false;
+        
+        const SECRET_CODE = "Alpha"; // The hardcoded secret code for access
+        const VERIFIED_SESSION_KEY = "counselingReviewVerified"; // Key for sessionStorage
+
+        // --- DOM Elements ---
+        const reviewsContainer = document.getElementById('reviews-container');
+        const reviewFormSection = document.getElementById('review-form-section');
+        const accessGate = document.getElementById('access-gate');
+        const reviewForm = document.getElementById('review-form');
+        const ratingInput = document.getElementById('rating');
+        const ratingValueDisplay = document.getElementById('rating-value');
+        const messageBox = document.getElementById('message-box');
+        const gateMessageBox = document.getElementById('gate-message-box');
+        const submitButton = document.getElementById('submit-button');
+        const unlockButton = document.getElementById('unlock-button');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const reviewCountDisplay = document.getElementById('review-count');
+        const goBackButton = document.getElementById('go-back-button');
+        const secretCodeInput = document.getElementById('secret-code-input');
+        
+
+        // --- Utility Functions ---
+
+        /**
+         * Checks if the user has been verified in this session.
+         */
+        function isSessionVerified() {
+            return sessionStorage.getItem(VERIFIED_SESSION_KEY) === 'true';
+        }
+
+        /**
+         * Updates the UI of the access gate based on session verification status.
+         */
+        function updateGateUI() {
+            // Target the main description paragraph, avoiding the small "Demo Code" hint
+            const descP = accessGate.querySelector('p:not([class*="text-xs"])'); 
+            const heading = accessGate.querySelector('h2');
+            
+            // Ensure elements exist before manipulation
+            if (!descP || !heading) return;
+
+            if (isSessionVerified()) {
+                heading.textContent = 'Give Feedback (Verified Session)';
+                descP.innerHTML = 'You have already verified your access code for this session. Click below to enter the form instantly and submit another review.';
+                secretCodeInput.classList.add('hidden');
+                unlockButton.textContent = 'Continue to Review Form';
+                unlockButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                unlockButton.classList.add('bg-green-600', 'hover:bg-green-700');
+                accessGate.classList.add('border-green-500');
+                accessGate.classList.remove('border-indigo-500');
+            } else {
+                heading.textContent = 'Give Feedback';
+                descP.textContent = 'If you have completed a counseling session, please enter your secret access code to proceed to the review form.';
+                secretCodeInput.classList.remove('hidden');
+                unlockButton.textContent = 'Unlock Review Form';
+                unlockButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+                unlockButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                accessGate.classList.add('border-indigo-500');
+                accessGate.classList.remove('border-green-500');
+            }
+        }
+
+        /**
+         * Switches the active view (Access Gate vs. Review Form).
+         * @param {string} view 'gate' or 'form'
+         */
+        function switchView(view) {
+            if (view === 'form') {
+                accessGate.classList.add('hidden');
+                reviewFormSection.classList.remove('hidden');
+                gateMessageBox.classList.add('hidden'); // Clear any gate messages
+            } else if (view === 'gate') {
+                accessGate.classList.remove('hidden');
+                reviewFormSection.classList.add('hidden');
+                secretCodeInput.value = ''; // Clear code input visual
+                updateGateUI(); // Update UI to reflect session verification status
+            }
+        }
+
+        /**
+         * Renders the star rating HTML for a given score.
+         */
+        function renderStars(rating) {
+            const fullStar = `<svg class="w-5 h-5 star-icon fill-current" viewBox="0 0 24 24"><path d="M12 17.27l6.18 3.73-1.64-7.03 5.46-4.73-7.19-.61L12 2 9.19 8.63l-7.19.61 5.46 4.73-1.64 7.03L12 17.27z"/></svg>`;
+            const emptyStar = `<svg class="w-5 h-5 text-gray-300 fill-current" viewBox="0 0 24 24"><path d="M12 17.27l6.18 3.73-1.64-7.03 5.46-4.73-7.19-.61L12 2 9.19 8.63l-7.19.61 5.46 4.73-1.64 7.03L12 17.27z"/></svg>`;
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += i <= rating ? fullStar : emptyStar;
+            }
+            return `<div class="flex items-center space-x-0.5">${stars}</div>`;
+        }
+
+        /**
+         * Converts Firestore timestamp object to a readable date string.
+         */
+        function formatTimestamp(timestamp) {
+            if (timestamp && typeof timestamp.toDate === 'function') {
+                return timestamp.toDate().toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'short', day: 'numeric'
+                });
+            }
+            return 'Just now';
+        }
+
+        /**
+         * Displays a temporary success or error message in the form area.
+         */
+        function showMessage(message, isSuccess, target = messageBox) {
+            target.textContent = message;
+            target.className = isSuccess
+                ? "mt-4 p-3 rounded-lg text-center bg-green-100 text-green-700 block"
+                : "mt-4 p-3 rounded-lg text-center bg-red-100 text-red-700 block";
+            setTimeout(() => {
+                target.classList.add('hidden');
+            }, 5000);
+        }
+
+        /**
+         * Placeholder function to simulate calling a backend service (e.g., Cloud Function)
+         * to send a personalized email after successful submission.
+         */
+        async function sendAutomatedEmail(userEmail, userName, futureGoal) {
+            console.log(`[Backend Simulation] Attempting to send personalized email to: ${userEmail}`);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            console.log(`[Backend Simulation] Email process initiated successfully for ${userEmail}.`);
+            return true;
+        }
+
+        // --- Firebase Core Setup ---
+
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            
+            // Set persistence to session to maintain login across page navigation within the session
+            setPersistence(auth, browserSessionPersistence);
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            document.getElementById('loading-indicator').textContent = "Failed to load application. Check console for Firebase setup errors.";
+        }
+
+        /**
+         * Authenticates the user using the custom token or anonymously.
+         */
+        async function authenticateUser() {
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Firebase Auth Error:", error);
+                // The onAuthStateChanged listener will handle retries or updates if necessary.
+            }
+        }
+
+        /**
+         * Handles authentication state changes and sets up Firestore listener.
+         */
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userId = user.uid;
+                isAuthReady = true;
+                listenForReviews(); // Start listening for data once auth is ready
+                
+                // Check verification status on load and show the correct view
+                if (isSessionVerified()) {
+                    switchView('form');
+                } else {
+                    switchView('gate');
+                }
+
+            } else {
+                console.log("User signed out. Attempting authentication.");
+                authenticateUser();
+            }
+        });
+
+        // Start the authentication process immediately if not yet started
+        if (!auth.currentUser) {
+            authenticateUser();
+        }
+
+        // --- Firestore Data Operations ---
+
+        // Public collection path
+        const REVIEWS_COLLECTION_PATH = `artifacts/${appId}/public/data/career_reviews`;
+
+        /**
+         * Fetches and listens for real-time updates to the reviews collection.
+         */
+        function listenForReviews() {
+            if (!isAuthReady || !userId) {
+                console.warn("Firestore listener skipped: Authentication is not yet ready.");
+                return;
+            }
+
+            const reviewsQuery = query(collection(db, REVIEWS_COLLECTION_PATH));
+
+            onSnapshot(reviewsQuery, (snapshot) => {
+                loadingIndicator.classList.add('hidden');
+                const reviews = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    reviews.push({ id: doc.id, ...data });
+                });
+
+                // Sort reviews by timestamp (newest first) in memory
+                reviews.sort((a, b) => {
+                    if (a.timestamp && b.timestamp) {
+                        // Use toMillis() for comparison
+                        const aTime = typeof a.timestamp.toMillis === 'function' ? a.timestamp.toMillis() : 0;
+                        const bTime = typeof b.timestamp.toMillis === 'function' ? b.timestamp.toMillis() : 0;
+                        return bTime - aTime;
+                    }
+                    // Handle cases where timestamp might be pending (serverTimestamp) or missing
+                    return 0;
+                });
+
+                renderReviews(reviews);
+            }, (error) => {
+                console.error("Error listening to reviews:", error);
+                loadingIndicator.textContent = "Failed to load reviews.";
+            });
+        }
+
+        /**
+         * Renders the list of reviews in the container.
+         * @param {Array<Object>} reviews
+         */
+        function renderReviews(reviews) {
+            reviewsContainer.innerHTML = ''; // Clear existing reviews
+            reviewCountDisplay.textContent = `(${reviews.length} total)`;
+
+            if (reviews.length === 0) {
+                reviewsContainer.innerHTML = `
+                    <div class="p-8 bg-white text-center rounded-xl text-gray-500 italic shadow-inner">
+                        No reviews yet. Be the first to share your experience by clicking "Give Feedback"!
+                    </div>
+                `;
+                return;
+            }
+
+            reviews.forEach(review => {
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'bg-white p-6 rounded-xl review-card border-l-4 border-indigo-500 transition hover:shadow-2xl duration-300';
+                
+                // Determine display name
+                const displayName = review.name && review.name.trim() !== '' ? review.name.trim() : 'Anonymous Student';
+                const planText = review.futurePlan || 'Goal not specified.';
+
+                reviewElement.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        ${renderStars(review.rating || 5)}
+                        <span class="text-sm text-gray-500">${formatTimestamp(review.timestamp)}</span>
+                    </div>
+                    <p class="text-xl font-extrabold text-gray-900 mb-1">${displayName}</p>
+                    <p class="text-sm font-medium text-indigo-600 mb-4 bg-indigo-50 inline-block px-3 py-1 rounded-full">${review.counselingType || 'General Counseling'}</p>
+                    
+                    <div class="border-t pt-4 mt-2">
+                        <p class="text-xs font-semibold uppercase text-blue-500 mb-1">Stated Future Goal</p>
+                        <p class="text-gray-700 italic border-l-2 border-blue-200 pl-3 leading-snug mb-4">"${planText}"</p>
+                    </div>
+
+                    <p class="text-gray-700 leading-relaxed text-base">${review.reviewText || 'No detailed feedback provided.'}</p>
+                    
+                    <div class="mt-4 pt-3 border-t text-xs text-gray-400">
+                        <span class="font-bold text-gray-600">Verified ID:</span> <span class="break-all font-mono">${review.userId || 'N/A'}</span>
+                    </div>
+                `;
+                reviewsContainer.appendChild(reviewElement);
+            });
+        }
+
+
+        // --- Event Handlers ---
+
+        // Code Gate Logic 
+        unlockButton.addEventListener('click', () => {
+            // 1. If already verified, grant instant access
+            if (isSessionVerified()) {
+                showMessage("Session verified. Welcome back!", true, gateMessageBox);
+                setTimeout(() => switchView('form'), 300);
+                return;
+            }
+
+            // 2. If not verified, proceed with code check
+            const code = secretCodeInput.value.trim();
+            
+            if (code === SECRET_CODE) {
+                showMessage("Success! Unlocking form for this session...", true, gateMessageBox);
+                sessionStorage.setItem(VERIFIED_SESSION_KEY, 'true'); // Set the session flag
+                
+                // Update UI instantly before switching, so if they switch back, it's correct
+                updateGateUI(); 
+                
+                setTimeout(() => switchView('form'), 1000);
+            } else {
+                showMessage("Invalid code. Please try again.", false, gateMessageBox);
+            }
+        });
+
+        // Go Back to Public View Logic
+        goBackButton.addEventListener('click', () => {
+            switchView('gate');
+        });
+
+        // Update rating display when slider moves
+        ratingInput.addEventListener('input', () => {
+            ratingValueDisplay.textContent = `${ratingInput.value}/5`;
+        });
+
+
+        // Handle form submission
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!isAuthReady || !userId) {
+                showMessage("Authentication not ready. Please wait a moment and try again.", false);
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+
+            const name = document.getElementById('name').value.trim();
+            const reviewText = document.getElementById('review').value.trim();
+            const futurePlan = document.getElementById('futurePlan').value;
+            const counselingType = document.getElementById('type').value;
+            const email = document.getElementById('email').value.trim();
+            
+            const wordCount = reviewText.split(/\s+/).filter(word => word.length > 0).length;
+
+            const reviewData = {
+                userId: userId,
+                name: name,
+                email: email || null,
+                counselingType: counselingType,
+                futurePlan: futurePlan,
+                rating: parseInt(ratingInput.value, 10),
+                reviewText: reviewText,
+                timestamp: serverTimestamp(),
+            };
+
+            // --- Validation ---
+
+            if (!name || !counselingType || !futurePlan) {
+                showMessage("Please fill out all required fields.", false);
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Review';
+                return;
+            }
+
+            if (wordCount < 15) {
+                showMessage(`Your detailed feedback must be at least 15 words long. You currently have ${wordCount} words.`, false);
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Review';
+                return;
+            }
+            
+            try {
+                const MAX_RETRIES = 5;
+                let submissionSuccessful = false;
+
+                for (let i = 0; i < MAX_RETRIES; i++) {
+                    try {
+                        await addDoc(collection(db, REVIEWS_COLLECTION_PATH), reviewData);
+                        submissionSuccessful = true;
+                        break;
+                    } catch (error) {
+                        // Implement exponential backoff
+                        if (i === MAX_RETRIES - 1) throw error;
+                        const delay = Math.pow(2, i) * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    }
+                }
+
+                if (submissionSuccessful) {
+                    reviewForm.reset();
+                    ratingInput.value = 5;
+                    ratingValueDisplay.textContent = '5/5';
+                    
+                    // The switchView('gate') call will automatically update the UI 
+                    // to show the green "Continue to Review Form" button since the session is verified.
+                    switchView('gate'); 
+
+                    if (email) {
+                        showMessage("Review submitted! Preparing and sending your personalized email...", true);
+                        sendAutomatedEmail(email, name, futurePlan)
+                            .then(() => {
+                                showMessage(`Review submitted and personalized email sent successfully to ${email}.`, true);
+                            })
+                            .catch(err => {
+                                console.error("Email sending failed or timed out:", err);
+                                showMessage("Review submitted! Note: Automated email could not be sent.", true);
+                            });
+                    } else {
+                        showMessage("Thank you! Your review has been submitted.", true);
+                    }
+                }
+
+            } catch (error) {
+                console.error("Error submitting review:", error);
+                showMessage("A severe error occurred while submitting. Please try again later.", false);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Review';
+            }
+        });
+    </script>
+</body>
+</html>
