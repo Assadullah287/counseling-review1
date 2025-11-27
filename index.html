@@ -46,6 +46,7 @@
         }
         #reviews-scrolling-container::-webkit-scrollbar-track {
             background-color: #e5e7eb; /* Gray-200 */
+            
         }
     </style>
 </head>
@@ -159,6 +160,7 @@
     </div>
 
     <script type="module">
+        // Import necessary Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp, setLogLevel, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -167,6 +169,7 @@
         setLogLevel('Debug');
 
         // --- Firebase Configuration (Using placeholder values) ---
+        // NOTE: These placeholder credentials must be replaced with your actual Firebase project configuration for the app to function.
         const firebaseConfig = {
             apiKey: "AIzaSyDcoFXzxlHor3XmrR5yyTt8h3sYckNb0m0",
             authDomain: "counseling-reviews-7f01e.firebaseapp.com",
@@ -178,28 +181,69 @@
         };
 
         const appId = "career-counseling-app";
-        const initialAuthToken = null; // Removed custom token usage
-
         let app, db, auth;
         let userId = null;
         let isAuthReady = false;
         
         // --- Security Configuration ---
-        const SECRET_CODE = "Alpha"; // The hardcoded secret code for access
-        const VERIFIED_SESSION_KEY = "counselingReviewVerified"; // Key for sessionStorage
+        // **This is the secret code.** Change it to your desired code.
+        const SECRET_CODE = "Alpha"; 
+        // Key used for session storage to verify access status
+        const VERIFIED_SESSION_KEY = "counselingReviewVerified"; 
         const REVIEWS_COLLECTION_PATH = `artifacts/${appId}/public/data/career_reviews`;
 
         // --- Simplified Feedback Samples ---
         const FEEDBACK_SAMPLES = [
-            "The session provided a clear direction for my future career path.",
-            "I received valuable advice on improving my professional skills.",
-            "The counselor helped me confirm my choice of major/career field.",
-            "This consultation was very productive and helped reduce my career anxiety.",
-            "I now have a clear, actionable plan for my immediate next steps.",
-            "The information was well-structured and easy to understand.",
-            "It was a positive and encouraging experience overall.",
-            "My questions were answered thoroughly and professionally.",
-            "The guidance given was highly relevant to my personal goals."
+ "The session helped me understand my career choices better and I feel more confident now.",
+"I got really useful tips on how to improve my communication skills.",
+"The counselor explained things in a simple way that was easy for me to follow.",
+"I feel like I have a better idea of what I want to do in the future.",
+"This session helped me reduce confusion about my subject selection.",
+"The advice given today will help me improve myself a lot.",
+"I liked how the counselor listened to my problems and gave clear answers.",
+"I now know what steps I should take to reach my career goals.",
+"The guidance was very helpful and made my path look clearer.",
+"I feel less stressed about my future after this meeting.",
+"The counselor answered all my doubts in a very respectful way.",
+"This session motivated me to work harder on my goals.",
+"I learned new things about career planning that I didn’t know before.",
+"The explanation about different fields was very helpful for me.",
+"I feel like I can make better decisions after attending this session.",
+"The session helped me understand my strengths much better.",
+"The counselor helped me realise what career suits me the most.",
+"I liked how friendly and supportive the counselor was.",
+"The advice given will help me in my academics and future life.",
+"The career options explained to me were very informative.",
+"I feel more prepared for choosing the right subject for my future.",
+"The counselor guided me kindly and made things easier to understand.",
+"This session helped me build confidence about my career decisions.",
+"I got clarity on what skills I should work on for my future.",
+"The counselor gave examples that helped me understand everything better.",
+"I feel like this session cleared many doubts I had for a long time.",
+"I liked how the meeting was organised and very easy to follow.",
+"The counselor helped me understand the advantages and disadvantages of different fields.",
+"I feel relieved after this session because I finally have a direction.",
+"The tips shared in the session will help me improve my personal skills.",
+"The counselor helped me focus on what is most important for my future.",
+"I got a lot of practical advice that I can start using right away.",
+"The session helped me see my mistakes and how to fix them.",
+"I feel much more positive about my future goals now.",
+"The counselor made me understand what career choices fit my personality.",
+"I learned how to plan my next steps in a proper way.",
+"The guidance I got today was very encouraging and supportive.",
+"I liked the step-by-step explanation given by the counselor.",
+"The session helped me become more sure about my future decisions.",
+"I got great suggestions on how to improve my study habits.",
+"The counselor helped me understand my weaknesses and how to work on them.",
+"I feel like I can focus better on my future after this talk.",
+"The advice was simple, clear, and very helpful for me.",
+"I learned about careers that I never knew before this session.",
+"The counselor was very patient and understanding while answering my questions.",
+"The session made me think more seriously about my long-term goals.",
+"I now have a proper plan for choosing my career path.",
+"The session helped me become more confident in my abilities.",
+"I liked how the counselor made everything easy for me to understand.",
+"The guidance I got today was exactly what I needed for my future.",
         ];
 
 
@@ -224,7 +268,7 @@
         // --- Utility Functions ---
 
         /**
-         * Checks if the user has been verified in this session.
+         * Checks if the user has been verified in this session (i.e., successfully entered the code).
          */
         function isSessionVerified() {
             return sessionStorage.getItem(VERIFIED_SESSION_KEY) === 'true';
@@ -241,8 +285,12 @@
 
             if (isSessionVerified()) {
                 heading.textContent = 'Give Feedback (Verified Session)';
-                descP.innerHTML = 'You have already verified your access code for this session. Click below to enter the form instantly.';
+                // User is informed that they can review multiple times
+                descP.innerHTML = 'You have already verified your access code for this session. Click below to enter the form instantly and review multiple times.';
+                
+                // HIDE THE CODE INPUT FIELD
                 secretCodeInput.classList.add('hidden');
+                
                 unlockButton.textContent = 'Continue to Review Form';
                 unlockButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
                 unlockButton.classList.add('bg-green-600', 'hover:bg-green-700');
@@ -251,7 +299,10 @@
             } else {
                 heading.textContent = 'Give Feedback';
                 descP.textContent = 'If you have completed a counseling session, please enter your secret access code to proceed to the review form.';
+                
+                // SHOW THE CODE INPUT FIELD
                 secretCodeInput.classList.remove('hidden');
+                
                 unlockButton.textContent = 'Unlock Review Form';
                 unlockButton.classList.remove('bg-green-600', 'hover:bg-green-700');
                 unlockButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
@@ -272,7 +323,7 @@
             } else if (view === 'gate') {
                 accessGate.classList.remove('hidden');
                 reviewFormSection.classList.add('hidden');
-                updateGateUI(); 
+                updateGateUI(); // Re-run UI update to handle "Continue" button text
             }
         }
 
@@ -298,7 +349,7 @@
                 date = timestamp.toDate();
             } else if (timestamp && timestamp.toDate instanceof Date) {
                 date = timestamp.toDate;
-            } else if (timestamp && timestamp.seconds) { // Handle raw Firestore Timestamp object structure if needed
+            } else if (timestamp && timestamp.seconds) {
                 date = new Date(timestamp.seconds * 1000);
             } else {
                 return 'Just now';
@@ -328,7 +379,7 @@
             db = getFirestore(app);
             auth = getAuth(app);
             
-            // Set persistence to session to maintain login across page navigation within the session
+            // Persist authentication for the current session only
             setPersistence(auth, browserSessionPersistence);
         } catch (error) {
             console.error("Firebase initialization failed:", error);
@@ -353,15 +404,12 @@
             if (user) {
                 userId = user.uid;
                 isAuthReady = true;
-                listenForReviews(); // Start listening for data once auth is ready
+                listenForReviews(); 
                 
-                // Check verification status on load and show the correct view
-                if (isSessionVerified()) {
-                    switchView('form');
-                } else {
-                    switchView('gate');
-                }
-                updateGateUI(); // Ensure UI reflects the state
+                // Always show the gate first on load.
+                switchView('gate'); 
+                updateGateUI(); 
+                
             } else {
                 console.log("User signed out. Attempting anonymous authentication.");
                 authenticateUser();
@@ -384,11 +432,10 @@
                 return;
             }
 
-            // Query to order by timestamp descending, limit to a reasonable number
             const reviewsQuery = query(
                 collection(db, REVIEWS_COLLECTION_PATH),
                 orderBy("timestamp", "desc"),
-                limit(50) // Limit to 50 latest reviews
+                limit(50) 
             );
 
             onSnapshot(reviewsQuery, (snapshot) => {
@@ -409,7 +456,7 @@
          */
         function renderReviews(reviews) {
             loadingIndicator.classList.add('hidden');
-            reviewsContainer.innerHTML = ''; // Clear existing reviews
+            reviewsContainer.innerHTML = ''; 
             reviewCountDisplay.textContent = `(${reviews.length} total)`;
 
             if (reviews.length === 0) {
@@ -449,19 +496,20 @@
         
         // 1. Unlock Button (Access Gate Logic)
         unlockButton.addEventListener('click', () => {
-            // If already verified, switch directly to the form
+            // If session is already verified, allow instant access
             if (isSessionVerified()) {
                 switchView('form');
                 return;
             }
             
+            // If not verified, proceed with code check
             const code = secretCodeInput.value.trim();
 
             if (code === SECRET_CODE) {
                 sessionStorage.setItem(VERIFIED_SESSION_KEY, 'true');
                 showMessage('Access granted! Review form unlocked.', true, gateMessageBox);
-                // Clear the input and hide the gate after a short delay
                 secretCodeInput.value = ''; 
+                updateGateUI(); // Changes button text to 'Continue to Review Form' and hides input
                 setTimeout(() => switchView('form'), 1000); 
             } else {
                 showMessage('Invalid secret code. Please verify your code.', false, gateMessageBox);
@@ -470,6 +518,7 @@
 
         // 2. Go Back Button (Hide Form)
         goBackButton.addEventListener('click', () => {
+            // Returns to the gate, which will show the "Continue" button if session is verified
             switchView('gate');
         });
 
@@ -488,11 +537,11 @@
         reviewForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Basic Form Validation (Required fields are covered by HTML 'required')
+            // Final check: Session must be verified to submit
             if (!isSessionVerified() || !userId) {
-                 showMessage("Error: Session verification failed. Please re-enter the secret code.", false);
-                 switchView('gate');
-                 return;
+                showMessage("Error: Session verification required. Please re-enter the secret code.", false);
+                switchView('gate');
+                return;
             }
 
             const newReview = {
@@ -502,25 +551,29 @@
                 rating: parseInt(document.getElementById('rating').value),
                 reviewText: document.getElementById('review').value.trim(),
                 timestamp: serverTimestamp(),
-                // Include user ID for potential future admin moderation
                 submittedBy: userId 
             };
             
+            // Input Validation Check (Minor Enhancement)
+            if (!newReview.counselingType || !newReview.futurePlan || !newReview.reviewText || newReview.reviewText.length < 10) {
+                 showMessage("Please fill out all required fields and provide a detailed review (min 10 characters).", false);
+                 return;
+            }
+
             submitButton.disabled = true;
             submitButton.textContent = 'Submitting...';
 
             try {
-                // Add the new document to the Firestore collection
                 await addDoc(collection(db, REVIEWS_COLLECTION_PATH), newReview);
 
                 showMessage('Thank you! Your review has been submitted successfully.', true);
-                reviewForm.reset(); // Clear the form after success
-                document.getElementById('rating').value = 5; // Reset range display
+                // Reset form fields after successful submission
+                reviewForm.reset(); 
+                document.getElementById('rating').value = 5; 
                 ratingValueDisplay.textContent = '5/5';
-
-                // Optional: Hide the form after successful submission
-                // setTimeout(() => switchView('gate'), 3000); 
-
+                document.getElementById('type').value = ""; 
+                document.getElementById('futurePlan').value = "";
+                
             } catch (error) {
                 console.error("Error submitting review:", error);
                 showMessage(`Submission failed: ${error.message}`, false);
