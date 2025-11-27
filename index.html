@@ -36,18 +36,7 @@
         .cta-button:hover {
             transform: translateY(-1px);
         }
-        /* Custom scrollbar for review section */
-        #reviews-scrolling-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        #reviews-scrolling-container::-webkit-scrollbar-thumb {
-            background-color: #9ca3af; /* Gray-400 */
-            border-radius: 4px;
-        }
-        #reviews-scrolling-container::-webkit-scrollbar-track {
-            background-color: #e5e7eb; /* Gray-200 */
-            
-        }
+        /* FIX: REMOVED CUSTOM SCROLLBAR CSS AS THE CONTAINER IS NO LONGER MANUALLY SCROLLABLE */
     </style>
 </head>
 <body class="min-h-screen p-4 sm:p-8">
@@ -64,7 +53,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <div class="lg:col-span-1 h-fit sticky top-8">
+            <div class="lg:col-span-1 h-fit lg:sticky lg:top-8"> 
 
                 <div id="access-gate" class="bg-white p-6 sm:p-8 rounded-xl review-card border-l-4 border-indigo-500 shadow-xl">
                     <h2 class="text-2xl font-bold text-gray-800 mb-4">Give Feedback</h2>
@@ -100,6 +89,7 @@
                                 <option value="Major Selection">Major Selection</option>
                                 <option value="Career Path Planning">Career Path Planning</option>
                                 <option value="Interview Skills Workshop">Interview Skills Workshop</option>
+                                <option value="Other">Other</option>
                             </select>
                         </div>
 
@@ -144,7 +134,8 @@
 
             <div class="lg:col-span-2">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Verified Student Reviews <span id="review-count" class="text-indigo-600 text-xl font-extrabold"></span></h2>
-                <div id="reviews-scrolling-container" class="space-y-6 max-h-[800px] overflow-y-auto pr-2">
+                
+                <div id="reviews-scrolling-container" class="space-y-6 pr-2"> 
                     <div id="reviews-container" class="space-y-6">
                         <div id="loading-indicator" class="text-center p-8 text-gray-500 bg-white rounded-xl shadow-inner">
                             <svg class="animate-spin -ml-1 mr-3 h-6 w-6 text-indigo-500 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -194,56 +185,56 @@
 
         // --- Simplified Feedback Samples ---
         const FEEDBACK_SAMPLES = [
- "The session helped me understand my career choices better and I feel more confident now.",
-"I got really useful tips on how to improve my communication skills.",
-"The counselor explained things in a simple way that was easy for me to follow.",
-"I feel like I have a better idea of what I want to do in the future.",
-"This session helped me reduce confusion about my subject selection.",
-"The advice given today will help me improve myself a lot.",
-"I liked how the counselor listened to my problems and gave clear answers.",
-"I now know what steps I should take to reach my career goals.",
-"The guidance was very helpful and made my path look clearer.",
-"I feel less stressed about my future after this meeting.",
-"The counselor answered all my doubts in a very respectful way.",
-"This session motivated me to work harder on my goals.",
-"I learned new things about career planning that I didn’t know before.",
-"The explanation about different fields was very helpful for me.",
-"I feel like I can make better decisions after attending this session.",
-"The session helped me understand my strengths much better.",
-"The counselor helped me realise what career suits me the most.",
-"I liked how friendly and supportive the counselor was.",
-"The advice given will help me in my academics and future life.",
-"The career options explained to me were very informative.",
-"I feel more prepared for choosing the right subject for my future.",
-"The counselor guided me kindly and made things easier to understand.",
-"This session helped me build confidence about my career decisions.",
-"I got clarity on what skills I should work on for my future.",
-"The counselor gave examples that helped me understand everything better.",
-"I feel like this session cleared many doubts I had for a long time.",
-"I liked how the meeting was organised and very easy to follow.",
-"The counselor helped me understand the advantages and disadvantages of different fields.",
-"I feel relieved after this session because I finally have a direction.",
-"The tips shared in the session will help me improve my personal skills.",
-"The counselor helped me focus on what is most important for my future.",
-"I got a lot of practical advice that I can start using right away.",
-"The session helped me see my mistakes and how to fix them.",
-"I feel much more positive about my future goals now.",
-"The counselor made me understand what career choices fit my personality.",
-"I learned how to plan my next steps in a proper way.",
-"The guidance I got today was very encouraging and supportive.",
-"I liked the step-by-step explanation given by the counselor.",
-"The session helped me become more sure about my future decisions.",
-"I got great suggestions on how to improve my study habits.",
-"The counselor helped me understand my weaknesses and how to work on them.",
-"I feel like I can focus better on my future after this talk.",
-"The advice was simple, clear, and very helpful for me.",
-"I learned about careers that I never knew before this session.",
-"The counselor was very patient and understanding while answering my questions.",
-"The session made me think more seriously about my long-term goals.",
-"I now have a proper plan for choosing my career path.",
-"The session helped me become more confident in my abilities.",
-"I liked how the counselor made everything easy for me to understand.",
-"The guidance I got today was exactly what I needed for my future.",
+        "The session helped me understand my career choices better and I feel more confident now.",
+        "I got really useful tips on how to improve my communication skills.",
+        "The counselor explained things in a simple way that was easy for me to follow.",
+        "I feel like I have a better idea of what I want to do in the future.",
+        "This session helped me reduce confusion about my subject selection.",
+        "The advice given today will help me improve myself a lot.",
+        "I liked how the counselor listened to my problems and gave clear answers.",
+        "I now know what steps I should take to reach my career goals.",
+        "The guidance was very helpful and made my path look clearer.",
+        "I feel less stressed about my future after this meeting.",
+        "The counselor answered all my doubts in a very respectful way.",
+        "This session motivated me to work harder on my goals.",
+        "I learned new things about career planning that I didn’t know before.",
+        "The explanation about different fields was very helpful for me.",
+        "I feel like I can make better decisions after attending this session.",
+        "The session helped me understand my strengths much better.",
+        "The counselor helped me realise what career suits me the most.",
+        "I liked how friendly and supportive the counselor was.",
+        "The advice given will help me in my academics and future life.",
+        "The career options explained to me were very informative.",
+        "I feel more prepared for choosing the right subject for my future.",
+        "The counselor guided me kindly and made things easier to understand.",
+        "This session helped me build confidence about my career decisions.",
+        "I got clarity on what skills I should work on for my future.",
+        "The counselor gave examples that helped me understand everything better.",
+        "I feel like this session cleared many doubts I had for a long time.",
+        "I liked how the meeting was organised and very easy to follow.",
+        "The counselor helped me understand the advantages and disadvantages of different fields.",
+        "I feel relieved after this session because I finally have a direction.",
+        "The tips shared in the session will help me improve my personal skills.",
+        "The counselor helped me focus on what is most important for my future.",
+        "I got a lot of practical advice that I can start using right away.",
+        "The session helped me see my mistakes and how to fix them.",
+        "I feel much more positive about my future goals now.",
+        "The counselor made me understand what career choices fit my personality.",
+        "I learned how to plan my next steps in a proper way.",
+        "The guidance I got today was very encouraging and supportive.",
+        "I liked the step-by-step explanation given by the counselor.",
+        "The session helped me become more sure about my future decisions.",
+        "I got great suggestions on how to improve my study habits.",
+        "The counselor helped me understand my weaknesses and how to work on them.",
+        "I feel like I can focus better on my future after this talk.",
+        "The advice was simple, clear, and very helpful for me.",
+        "I learned about careers that I never knew before this session.",
+        "The counselor was very patient and understanding while answering my questions.",
+        "The session made me think more seriously about my long-term goals.",
+        "I now have a proper plan for choosing my career path.",
+        "The session helped me become more confident in my abilities.",
+        "I liked how the counselor made everything easy for me to understand.",
+        "The guidance I got today was exactly what I needed for my future.",
         ];
 
 
